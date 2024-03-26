@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reactive</title>
+    <link rel="stylesheet" href="reactive_style.css">
+  </head>
+
+  <body>
+    <div id="root"></div>
+  </body>
+
+  <script>
+    const root = document.getElementById("root");
+
+    let app = document.createElement("div");
+    app.className = "container";
+
+    let p = document.createElement("p");
+    p.innerText = 0;
+    p.className = "";
+
+    let button = document.createElement("button");
+    button.innerText = "Click Me";
+
+    button.addEventListener("click", () => {
+      p.innerText++;
+    });
+
+    app.appendChild(p);
+    app.appendChild(button);
+
+    root.appendChild(app);
+  </script>
+</html>

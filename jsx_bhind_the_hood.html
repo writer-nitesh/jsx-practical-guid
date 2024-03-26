@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reactive</title>
+    <link rel="stylesheet" href="reactive_style.css" />
+</head>
+
+<body>
+    <div id="root"></div>
+
+
+
+</body>
+<script>
+    const root = document.getElementById("root");
+    let val = 1;
+
+    function inc() {
+        val++;
+        render();
+    }
+
+    function destructure(props) {
+        let data = "";
+        for (const key of Object.keys(props)) {
+            data += `${key}='${props[key]}' `;
+        }
+        return data.trim();
+    }
+
+    function traverse(childrens) {
+        let code = "";
+        if (!Array.isArray(childrens)) {
+            return '';
+        }
+        code += `
+    ${childrens.map((item) => {
+            return `
+        <${item.type} ${destructure(item.props)}> 
+            ${typeof item.children == "object" ? traverse(item.children) : item.children}
+        </${item.type}>`
+        }).join('')}
+`;
+
+        return code;
+    }
+
+    function render() {
+        // JSX JSON tree 
+        let JSXJson = [{
+            type: "div",
+            props: { class: "container" },
+            children: [
+                {
+                    type: "p",
+                    props: { "aria-label": "test" },
+                    children: val, // Update directly with val
+                },
+                {
+                    type: "button",
+                    props: { type: "button", onclick: inc },
+                    children: "Click Me",
+                },
+            ]
+        }];
+
+        // Rendering JSX JSON
+        const code = JSXJson.map(item => {
+            return `<${item.type} ${destructure(item.props)}> ${typeof item.children == "object" ? traverse(item.children) : item.children}</${item.type}>`;
+        }).join('');
+        root.innerHTML = code;
+    }
+
+    render();
+</script>
+
+</html>
